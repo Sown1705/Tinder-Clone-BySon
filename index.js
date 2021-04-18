@@ -82,7 +82,7 @@ app.get('/upload', (req, res) => {
 app.get('/register', (req, res) => {
     res.render('register');
 });
-app.get('/delete/:id', (req, res) => {
+app.get('/delete=:id', (req, res) => {
     userConnect.findByIdAndDelete(req.params.id, function (err, users) {
         if (err) throw err;
         res.render('listFriends');
