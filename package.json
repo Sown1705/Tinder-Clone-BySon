@@ -1,5 +1,5 @@
 {
-  "name": "tinder-clone",
+  "name": "tinder-clone-byson",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -19,12 +19,12 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Sown1705/Tinder-Clone.git"
+    "url": "git+https://github.com/Sown1705/Tinder-Clone-BySon.git"
   },
   "author": "tinder",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/Sown1705/Tinder-Clone/issues"
+    "url": "https://github.com/Sown1705/Tinder-Clone-BySon/issues"
   },
-  "homepage": "https://github.com/Sown1705/Tinder-Clone#readme"
+  "homepage": "https://github.com/Sown1705/Tinder-Clone-BySon#readme"
 }
