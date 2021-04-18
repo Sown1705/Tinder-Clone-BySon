@@ -85,7 +85,7 @@ app.get('/register', (req, res) => {
 app.get('/delete/:id', (req, res) => {
     userConnect.findByIdAndDelete(req.params.id, function (err, users) {
         if (err) throw err;
-        res.send('delete');
+        res.render('listFriends');
     })
 
 });
