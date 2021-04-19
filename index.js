@@ -189,7 +189,7 @@ app.post('/createUser', upload, function (req, res) {
 
     res.render('swiper');
 })
-var port =3000||process.env.PORT;
+var port =process.env.PORT;
 app.listen(port, () => {
     console.log('The web server has started on port '+port);
 });
