@@ -20,7 +20,6 @@ var user = new mongoose.Schema({
     email: String,
     numberphone: String,
     avatar: String
-
 })
 
 
@@ -76,6 +75,52 @@ app.get('/profile=:id', (req, res) => {
         res.render('profile', { update: users })
     }).lean().exec();
 });
+
+var updateUser= new mongoose.Schema({
+    username: String,
+    password: String,
+    firstname: String,
+    lastname: String,
+    email: String,
+    numberphone: String,
+    location: String
+})
+app.post('/update=:id',upload, async (req, res) =>{
+      var userUpdate=mongoose.model('users',updateUser);
+    console.log(req.params.id);
+    userUpdate.updateOne({_id:req.params.id}, {$set: { 
+                username: req.body.user_name,
+                password: req.body.password,
+                firstname: req.body.first_name,
+                lastname: req.body.last_name,
+                email: req.body.email,
+                numberphone: req.body.numberPhone,
+                location: req.body.location
+        }},{ runValidators: true }, function (err) {
+            if (err) throw err;
+    
+            res.render('profile', { message: "Edit success!!!" });
+        })
+        // await userUpdate.replaceOne({_id:req.params.id}, { username: req.body.user_name,
+        //     password: req.body.password,
+        //     firstname: req.body.first_name,
+        //   lastname: req.body.last_name,
+        //   email: req.body.email,
+        //   numberphone: req.body.numberPhone,
+        //   location: req.body.location });
+
+    // var doc = await userUpdate.findOne({_id:req.params.id});
+        // doc.overwrite({username: req.body.user_name,
+        //               password: req.body.password,
+        //               firstname: req.body.first_name,
+        //             lastname: req.body.last_name,
+        //             email: req.body.email,
+        //             numberphone: req.body.numberPhone,
+        //             location: req.body.location});
+    //         await doc.save();
+})
+
+
 app.get('/upload', (req, res) => {
     res.render('upload');
 });
@@ -85,7 +130,7 @@ app.get('/register', (req, res) => {
 app.get('/delete/:id', (req, res) => {
     userConnect.findByIdAndDelete(req.params.id, function (err, users) {
         if (err) throw err;
-        res.send('Delete Success!!!');
+        res.send('delete');
     })
 
 });
@@ -113,35 +158,7 @@ app.get('/listFriends', (req, res) => {
 app.post('/upload', upload, function (req, res) {
     res.render('upload', { title: 'Upload Success!!!' })
 })
-app.post('/update=:id', upload, (req, res) => {
-    const file = req.file
-    if (!file) {
-        res.render('profile', { title: "Please choose a file !!!" });
-    } else
-        if (!file.originalname.match(/\.(jpg|JPG)$/)) {
-            res.render('profile', { title: "Please only choose a file jpg!!!" })
-        }
-    if (file instanceof multer.MulterError) {
-        res.render('profile', { title: "File size Maximum is 1MB.Please try again!!!" })
-    }
 
-    userConnect.findByIdAndUpdate(req.params.id, {
-        users: {
-            username: req.body.username,
-            password: req.body.password,
-            firstname: req.body.firstname,
-            lastname: req.body.lastname,
-            email: req.body.email,
-            numberphone: req.body.numberPhone,
-            avatar: req.file.originalname
-        }
-    }, function (err) {
-        if (err) throw err;
-
-        res.render('profile', { title: "Edit success!!!" });
-    })
-
-})
 
 //createUser
 app.post('/createUser', upload, function (req, res) {
@@ -172,6 +189,7 @@ app.post('/createUser', upload, function (req, res) {
 
     res.render('swiper');
 })
-app.listen( process.env.PORT, () => {
-    console.log('The web server has started on port 3000');
+var port =3000||process.env.PORT;
+app.listen(port, () => {
+    console.log('The web server has started on port '+port);
 });
