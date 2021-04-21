@@ -135,24 +135,44 @@ app.get('/delete/:id', (req, res) => {
 
 });
 app.get('/listFriends', (req, res) => {
-    userConnect.find({}, function (error, users) {
-        var type = 'home';
-        try {
-            type = req.query.type;
-        } catch (e) {
+    var  baseJson = {
+        errorCode : undefined,
+        errorMessage: undefined,
+        data: undefined,
+    }
+    userConnect.find({},function (error,dataList){
+        if (error){
+            baseJson.errorCode = 404;
+            baseJson.errorMessage = error;
+        }else {
+            baseJson.errorCode = 200;
+            baseJson.errorMessage = 'OK';
+            baseJson.data = dataList;
         }
-        if (error) {
-            res.render('listFriends', { title: 'List Friends : ' + error });
-            return
-        }
-        if (type == 'json') {
-            res.send(users)
-        } else {
-            res.render('listFriends', { title: 'List Friends', users: users });
-        }
-        //console.log(req.body.username);
-        //console.log(users);
-    }).lean().exec();
+        res.send(baseJson);
+    }).then(userlist => {
+            res.render('TaiKhoan',{
+                user:userlist.map(user=>user.toJSON())
+            });
+        })
+    // userConnect.find({}, function (error, users) {
+    //     var type = 'home';
+    //     try {
+    //         type = req.query.type;
+    //     } catch (e) {
+    //     }
+    //     if (error) {
+    //         res.render('listFriends', { title: 'List Friends : ' + error });
+    //         return
+    //     }
+    //     if (type == 'json') {
+    //         res.send(users)
+    //     } else {
+    //         res.render('listFriends', { title: 'List Friends', users: users });
+    //     }
+    //     //console.log(req.body.username);
+    //     //console.log(users);
+    // }).lean().exec();
 });
 //upload
 app.post('/upload', upload, function (req, res) {
